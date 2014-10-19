@@ -30,4 +30,4 @@
             @(http/put (path customer) (build-req customer))]
         (if (= 200 status)
           (println "Successfully upserted" (:email customer))
-          (println "Failed, exception: " body))))))
+          (println "Failed: " (str body error)))))))
