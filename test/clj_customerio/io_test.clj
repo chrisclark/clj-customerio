@@ -2,8 +2,14 @@
   (:require [clojure.test :refer :all]
             [clj-customerio.io :refer :all]))
 
-(deftest do-trim-test
-  (is (= (do-trim ["a " "b" "  c "]) ["a" "b" "c"])))
+(deftest in-coll?-true-test
+  (is (= (in-coll? ["c" "a"] ["a" "b" "c"]) true)))
+
+(deftest in-coll?-false-test
+  (is (= (in-coll? ["d" "b"] ["a" "b" "c"]) false)))
+
+(deftest trim-coll-test
+  (is (= (trim-coll ["a " "b" "  c "]) ["a" "b" "c"])))
 
 (deftest keywordify-test
   (is (= (keywordify ["a" "b "]) [:a :b])))

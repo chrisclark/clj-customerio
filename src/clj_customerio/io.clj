@@ -3,24 +3,27 @@
   (:use clojure-csv.core
         clojure.string))
 
-(defn do-trim [col] (map #(trim %1) col))
+(defn trim-coll
+  [coll]
+  (map #(trim %1) coll))
+
+(defn in-coll?
+  [elems coll]
+  (every? true? (map #(boolean (some #{%1} coll)) elems)))
 
 (defn structure
   [headers body]
-  (map #(zipmap headers (do-trim %1)) (next body)))
+  (map #(zipmap headers (trim-coll %1)) (next body)))
 
 (defn keywordify
   [headers]
-  (map #(keyword %1) (do-trim headers)))
+  (map #(keyword %1) (trim-coll headers)))
 
 (defn read-customers
   [filename]
   (let [ingested (-> filename
                     slurp
-                    parse-csv)
-        headers (set (first ingested))]
-    (if (and
-          (contains? headers "email")
-          (contains? headers "id"))
+                    parse-csv)]
+    (if (in-coll? ["email" "id"] (first ingested))
       (structure (keywordify (first ingested)) ingested)
       (println "Error - Could not find 'email' and/or 'id' in csv header."))))
