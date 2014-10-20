@@ -7,14 +7,20 @@
             [clojure.data.json :as json]))
 
 (defn build-req
-  [obj opts]
+  [auth obj]
   {:headers {"Content-Type" "application/json"}
-   :basic-auth [(:user opts) (:password opts)]
+   :basic-auth auth
    :body (json/write-str obj)})
 
 (defn path
   [customer]
   (str "https://track.customer.io/api/v1/customers/" (:id customer)))
+
+(def logger
+  [status]
+  (if (= 200 status)
+    (println "Successfully upserted" (:email customer))
+    (println "Failed: " (str body error))))
 
 (defn -main
   [& args]
@@ -22,11 +28,11 @@
                                 ["-f" "--file" "CSV file" :flag false]
                                 ["-u" "--user" "customer.io Site Id" :flag false]
                                 ["-p" "--password" "customer.io API Key" :flag false])
-        emails (read-customers (:file opts))]
+        customer-data (read-customers (:file opts))
+        basic-auth [(:user opts) (:password opts)]
+        req-builder (partial build-req basic-auth)]
 
-    (doseq [customer emails]
+    (doseq [customer customer-data]
       (let [{:keys [status headers body error] :as resp}
-            @(http/put (path customer) (build-req customer opts))]
-        (if (= 200 status)
-          (println "Successfully upserted" (:email customer))
-          (println "Failed: " (str body error)))))))
+            @(http/put (path customer) (req-builder customer))]
+        (logger status)))))
