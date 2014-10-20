@@ -11,9 +11,8 @@
   (let [[opts args banner] (cli args
                                 ["-f" "--file" "CSV file" :flag false]
                                 ["-u" "--user" "customer.io Site Id" :flag false]
-                                ["-p" "--password" "customer.io API Key" :flag false])]
-
-    (def emails (read-customers (:file opts)))
+                                ["-p" "--password" "customer.io API Key" :flag false])
+        emails (read-customers (:file opts))]
 
     (defn build-req
       [obj]
