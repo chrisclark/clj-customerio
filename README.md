@@ -9,7 +9,7 @@ The first row of the csv file must contain headers. A minimal valid csv file wou
     id,email
     1,chris@untrod.com
 
-The order of columns does not matter. Fields must be separated by commas only (no spaces) and lines separated with either \n or \r\n. Any fields beyond email and id are treated as additional properties to be sent to customer.io. If the id is already present in customer.io, the record will be updated. Otherwise it will be created.
+The order of columns does not matter. Fields must be separated by commas (or comma-space) and lines separated with either \n or \r\n. Any fields beyond email and id are treated as additional properties to be sent to customer.io. If the id is already present in customer.io, the record will be updated. Otherwise it will be created.
 
 Run with leiningrad, with the following arguments:
 
