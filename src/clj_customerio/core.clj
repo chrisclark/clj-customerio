@@ -16,8 +16,8 @@
   [customer]
   (str "https://track.customer.io/api/v1/customers/" (:id customer)))
 
-(def logger
-  [status]
+(defn logger
+  [status customer body error]
   (if (= 200 status)
     (println "Successfully upserted" (:email customer))
     (println "Failed: " (str body error))))
@@ -35,4 +35,4 @@
     (doseq [customer customer-data]
       (let [{:keys [status headers body error] :as resp}
             @(http/put (path customer) (req-builder customer))]
-        (logger status)))))
+        (logger status customer body error)))))
