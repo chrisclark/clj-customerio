@@ -1,8 +1,8 @@
 (ns clj-customerio.core
   (:gen-class)
-  (:use clj-customerio.io
-        [clojure.string :only (join)])
-  (:require [org.httpkit.client :as http]
+  (:require [clj-customerio.io :refer [read-customers]]
+            [clojure.string :refer [join]]
+            [org.httpkit.client :as http]
             [clojure.tools.cli :refer [cli]]
             [clojure.data.json :as json]))
 

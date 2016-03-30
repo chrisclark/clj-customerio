@@ -1,21 +1,21 @@
 (ns clj-customerio.io
   (:gen-class)
-  (:use clojure-csv.core
-        clojure.string))
+  (:require [clojure-csv.core :refer [parse-csv]]
+            [clojure.string :refer [trim]]))
 
-(defn trim-coll
+(defn- trim-coll
   [coll]
   (map #(trim %1) coll))
 
-(defn in-coll?
+(defn- in-coll?
   [elems coll]
   (every? true? (map #(boolean (some #{%1} coll)) elems)))
 
-(defn structure
+(defn- structure
   [headers body]
   (map #(zipmap headers (trim-coll %1)) (next body)))
 
-(defn keywordify
+(defn- keywordify
   [headers]
   (map #(keyword %1) (trim-coll headers)))
 
